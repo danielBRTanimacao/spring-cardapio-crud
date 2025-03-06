@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.daniel.menu.food.Food;
+import com.daniel.menu.food.FoodResponseDTO;
 import com.daniel.menu.repository.FoodRepository;
 
 @CrossOrigin(origins = "http://localhost:5173/")
@@ -20,8 +20,11 @@ public class FoodController {
     private FoodRepository repository;
     
     @GetMapping
-    public List<Food> getAll() {
-        List<Food> foodList = repository.findAll();
+    public List<FoodResponseDTO> getAll() {
+        List<FoodResponseDTO> foodList = repository
+            .findAll()
+            .stream()
+            .map(FoodResponseDTO::new).toList();
         return foodList;
     }
 }
