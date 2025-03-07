@@ -18,6 +18,71 @@
 
 ### Instalação recomendações 🟡
 
+### Instalação java ☕
+
+#### Windows 🪟
+
+Baixe o [Java Jdk](https://www.oracle.com/java/technologies/downloads/)
+agora baixe a [Versão recente Java](https://www.java.com/pt-BR/download/)
+
+#### Linux 🐧
+
+Via terminal
+
+```
+sudo apt update
+sudo apt upgrade
+
+sudo apt install openjdk-21-jdk
+
+# teste se instalou corretamente
+java --version
+```
+
+#### MacOs 💻
+
+Baixe o [Java](https://www.java.com/en/download/help/mac_install.html) e o [JDK](https://docs.oracle.com/en/java/javase/22/install/installation-jdk-macos.html)
+
+### instalação IDE ⚙️
+
+você pode utilizar qualquer IDE para o projeto minha preferencia e o [Visual Studio Code](https://code.visualstudio.com/) da Microsoft
+
+Recomendado instalação extensões spring + java
+
+<img src="./img-project/extension.png" alt="imagem-exetension" />
+<img src="./img-project/extensionspring.png" alt="imagem-exetension" />
+
+### Instalação PostGreSql 🐘
+
+Para testes você pode modificar a base do projeto e utilizar outros banco de dados como `h2` para testes locais. E necessario modificar o `aplication.properties` e o `pom.xml`
+
+#### Linux
+
+```
+sudo apt update
+sudo apt upgrade -y
+
+sudo apt install postgresql postgresql-contrib -y
+
+# teste se o postgresql esta rodando
+sudo systemctl status postgresql
+
+# Configure seu usuario e seu banco de dados
+sudo -i -u postgres
+psql
+
+-> dentro do psql
+    CREATE DATABASE food;
+    CREATE USER name_of_user WITH PASSWORD 'password'; # Cria um usuario novo
+    GRANT ALL PRIVILEGES ON DATABASE food TO name_of_user; # Adciona todas as permissões
+
+    # Se você quiser pode modificar o user padrão "postgres"
+    ALTER USER postgres WITH PASSWORD 'password';
+
+    # quit
+    \q
+```
+
 ### Rodar localmente 🟢
 
 ## Dockerfile e Docker-compose 🐋
