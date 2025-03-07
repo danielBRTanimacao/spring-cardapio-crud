@@ -56,7 +56,25 @@ Recomendado instalação extensões spring + java
 
 Para testes você pode modificar a base do projeto e utilizar outros banco de dados como `h2` para testes locais. E necessario modificar o `aplication.properties` e o `pom.xml`
 
-#### Linux
+#### Windows 🪟
+
+instalando o [PostgreSql](https://www.postgresql.org/download/) no Windows
+
+```
+psql
+
+CREATE DATABASE food; # utilizando o padrão do projeto
+CREATE USER name_of_user WITH PASSWORD 'password'; # Cria um usuario novo
+GRANT ALL PRIVILEGES ON DATABASE food TO name_of_user; # Adciona todas as permissões
+
+# Se você quiser pode modificar o user padrão "postgres"
+ALTER USER postgres WITH PASSWORD 'password';
+
+# quit
+\q
+```
+
+#### Linux 🐧
 
 ```
 sudo apt update
@@ -83,7 +101,44 @@ psql
     \q
 ```
 
-### Rodar localmente 🟢
+#### MacOs 💻
+
+instalando os pacotes MacOs [PostgreSql](https://www.postgresql.org/download/macosx/)
+
+```
+psql
+
+CREATE DATABASE food; # utilizando o padrão do projeto
+CREATE USER name_of_user WITH PASSWORD 'password'; # Cria um usuario novo
+GRANT ALL PRIVILEGES ON DATABASE food TO name_of_user; # Adciona todas as permissões
+
+# Se você quiser pode modificar o user padrão "postgres"
+ALTER USER postgres WITH PASSWORD 'password';
+
+# quit
+\q
+```
+
+Você pode seguir o projeto normalmente se baixar o `postgresql` modificar apenas a senha do `postgres` user padrão e criando a database `food`.
+
+## Rodar localmente Clonar o projeto 🟢
+
+```
+# Iniciando seu clone
+git init
+git remote add origin "Sua origin"
+git branch -M main
+git clone https://github.com/danielBRTanimacao/spring-cardapio-crud.git
+git add .
+git commit -a -m "se vc fez alguma modificação comite e suba para seu repositorio"
+git push -u origin main
+
+```
+
+```
+mvn clean install # instala as dependencias do pom.xml
+mvn run ./appname
+```
 
 ## Dockerfile e Docker-compose 🐋
 
