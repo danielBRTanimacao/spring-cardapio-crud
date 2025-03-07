@@ -2,7 +2,7 @@
 
 <img src="./img-project/img-project.png" alt="img-project" />
 
-> Infos projetos
+> Simples CRUD projeto spring API REST para visuaslização de comidas diversas como um menu podendo adicionar modificar e apagar alimentos desenvolvido com spring boot e um front end em react Ts database em postgresql utilizando docker para subir servidor web
 
 ## Construção do projeto 🛠️
 
@@ -142,4 +142,8 @@ mvn run ./appname
 
 ## Dockerfile e Docker-compose 🐋
 
+Não iniciado
+
 ## Comandos servidor Linux 🐧
+
+Não iniciado
