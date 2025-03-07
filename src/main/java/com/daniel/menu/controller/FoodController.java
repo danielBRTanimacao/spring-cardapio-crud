@@ -3,18 +3,13 @@ package com.daniel.menu.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.daniel.menu.food.Food;
-import com.daniel.menu.food.FoodRequestDTO;
-import com.daniel.menu.food.FoodResponseDTO;
+import com.daniel.menu.food.*;
 import com.daniel.menu.repository.FoodRepository;
+
+import lombok.var;
+
 
 @CrossOrigin(origins = "http://localhost:5173/")
 @RestController
@@ -39,9 +34,26 @@ public class FoodController {
         repository.save(foodData);
     }
 
-    @DeleteMapping
-    public void deleteFood(@RequestBody Long id) {
+    @DeleteMapping("/{id}")
+    public void deleteFood(@PathVariable Long id) {
         repository.deleteById(id);
+    }
+
+    @PutMapping("/{name}/{id}")
+    public void putFood(@PathVariable String name, @PathVariable Long id, @RequestBody FoodRequestDTO data) {
+        var specificFood = repository.findById(id);
+
+        if (specificFood.isPresent()) {
+            Food existingFood = specificFood.get();
+    
+            existingFood.setTitle(data.title());
+            existingFood.setImage(data.image());
+            existingFood.setPrice(data.price());
+    
+            repository.save(existingFood);
+    
+        } 
+        
     }
 
 }
