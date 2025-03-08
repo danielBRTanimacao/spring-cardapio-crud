@@ -11,7 +11,6 @@ import com.daniel.menu.repository.FoodRepository;
 import lombok.var;
 
 
-@CrossOrigin(origins = "http://localhost:5173/")
 @RestController
 @RequestMapping("food")
 public class FoodController {
