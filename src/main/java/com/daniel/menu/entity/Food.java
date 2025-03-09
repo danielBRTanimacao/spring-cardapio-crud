@@ -2,15 +2,10 @@ package com.daniel.menu.entity;
 
 import com.daniel.menu.dto.FoodRequestDTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 @Table(name = "food")
 @Entity
@@ -24,8 +19,15 @@ public class Food {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Valid
+
+    @NotNull(message = "Title deve conter o nome do alimento!")
+    @NotBlank(message = "Title deve conter o nome do alimento!")
     private String title;
+    @NotNull(message = "Image deve conter a imagem alimento!")
+    @NotBlank(message = "Image deve conter a imagem alimento!")
     private String image;
+    @NotNull(message = "Title deve conter o preço do alimento!")
     private Integer price;
 
     public Food(FoodRequestDTO data) {
