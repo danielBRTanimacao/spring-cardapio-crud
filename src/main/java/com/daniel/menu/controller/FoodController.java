@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.daniel.menu.food.*;
+import com.daniel.menu.dto.*;
+import com.daniel.menu.entity.Food;
 import com.daniel.menu.repository.FoodRepository;
 
 import lombok.var;

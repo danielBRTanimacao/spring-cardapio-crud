@@ -1,4 +1,6 @@
-package com.daniel.menu.food;
+package com.daniel.menu.entity;
+
+import com.daniel.menu.dto.FoodRequestDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
