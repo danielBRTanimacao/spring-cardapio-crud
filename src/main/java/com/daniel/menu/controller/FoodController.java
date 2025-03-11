@@ -16,8 +16,6 @@ import com.daniel.menu.entity.Food;
 import com.daniel.menu.repository.FoodRepository;
 
 import jakarta.validation.Valid;
-import lombok.var;
-
 
 @RestController
 @RequestMapping("food")
