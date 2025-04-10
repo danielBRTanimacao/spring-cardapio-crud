@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+    backend:
+        build: .
+        container_name: spring-boot-app
+        ports:
+            - "8080:8080"
+        environment:
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/food
+            - SPRING_DATASOURCE_USERNAME=postgres
+            - SPRING_DATASOURCE_PASSWORD=password
+            - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+            - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+        depends_on:
+            - db
+        networks:
+            - spring-postgres
+
+    db:
+        image: postgres
+        container_name: postgres-db
+        restart: always
+        environment:
+            - POSTGRES_DB=food
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=password
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        networks:
+            - spring-postgres
+        expose:
+            - "5432"
+
+volumes:
+    db-data:
+
+networks:
+    spring-postgres:
