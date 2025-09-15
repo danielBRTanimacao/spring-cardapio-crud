@@ -2,6 +2,8 @@ package com.daniel.menu.controller;
 
 import java.util.*;
 
+import com.daniel.menu.service.FoodService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.validation.FieldError;
@@ -15,68 +17,40 @@ import com.daniel.menu.repository.FoodRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("food")
+@RequestMapping("api/foods")
+@RequiredArgsConstructor
 public class FoodController {
 
-    @Autowired
-    private FoodRepository repository;
+    private final FoodService foodService;
     
     @GetMapping
-    public List<FoodResponseDTO> getAll() {
-        List<FoodResponseDTO> foodList = repository
-            .findAll()
-            .stream()
-            .map(FoodResponseDTO::new).toList();
-        return foodList;
+    public List<Food> getAll() {
+        return foodService.getAllFoods();
     }
 
     @PostMapping
-    public ResponseEntity<Food> saveNewFood(@Valid @RequestBody FoodRequestDTO data) {
-        Food foodData = new Food(data);
-        repository.save(foodData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(foodData);
+    public ResponseEntity<Void> saveNewFood(@Valid @RequestBody FoodRequestDTO data) {
+        Food foodData = new Food();
+        foodData.setImage(data.image());
+        foodData.setPrice(data.price());
+        foodData.setTitle(data.title());
+        foodService.createFood(foodData);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteFood(@PathVariable Long id) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comida não encontrada");
-        }
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deleteFood(@PathVariable Long id) {
+        return foodService.delFood(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateFood(@PathVariable Long id, @Valid @RequestBody FoodRequestDTO data) {
-        var specificFood = repository.findById(id);
+    public ResponseEntity<Void> updateFood(@PathVariable Long id, @Valid @RequestBody FoodUpdateDTO data) {
+        Food preFood = new Food();
+        preFood.setImage(data.image());
+        preFood.setPrice(data.price());
+        preFood.setTitle(data.title());
 
-        if (specificFood.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comida não encontrada!");
-        }
-
-        Food existingFood = specificFood.get();
-        existingFood.setTitle(data.title());
-        existingFood.setImage(data.image());
-        existingFood.setPrice(data.price());
-
-        repository.save(existingFood);
-        
-        return ResponseEntity.ok(existingFood);
-    }
-
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationException(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-
-        return errors;
+        return foodService.updateFood(id, preFood);
     }
 
 }

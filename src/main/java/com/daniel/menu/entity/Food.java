@@ -1,29 +1,36 @@
 package com.daniel.menu.entity;
 
-import com.daniel.menu.dto.FoodRequestDTO;
 
 import jakarta.persistence.*;
 
 import lombok.*;
 
-@Table(name = "food")
-@Entity
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
 public class Food {
 
-    @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String image;
-    private Integer price;
+    private BigDecimal price;
 
-    public Food(FoodRequestDTO data) {
-        this.title = data.title();
-        this.image = data.image();
-        this.price = data.price();
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
