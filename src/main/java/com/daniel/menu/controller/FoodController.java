@@ -5,6 +5,7 @@ import java.util.*;
 import com.daniel.menu.service.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,8 +25,11 @@ public class FoodController {
     private final FoodService foodService;
     
     @GetMapping
-    public List<Food> getAll() {
-        return foodService.getAllFoods();
+    public Page<Food> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return foodService.getAllFoods(page, size);
     }
 
     @PostMapping

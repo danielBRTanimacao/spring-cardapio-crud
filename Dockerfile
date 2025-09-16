@@ -1,9 +1,16 @@
-FROM eclipse-temurin:21
+FROM maven:3.9-eclipse-temurin-21 AS builder
 
 WORKDIR /app
+COPY . .
 
-COPY target/menu-0.0.1-SNAPSHOT.jar /app/menu-crud.jar
+RUN mvn clean package -DskipTests
 
-ENTRYPOINT [ "java", "-jar", "menu-crud.jar"]
+FROM eclipse-temurin:21
+
+WORKDIR /menu
+
+COPY --from=builder /app/target/menu-0.0.1-SNAPSHOT.jar /menu.jar
+
+ENTRYPOINT [ "java", "-jar", "/menu.jar"]
 
 EXPOSE 8080

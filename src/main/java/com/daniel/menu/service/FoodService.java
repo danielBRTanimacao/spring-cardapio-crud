@@ -4,11 +4,13 @@ import com.daniel.menu.entity.Food;
 import com.daniel.menu.exceptions.customs.NotFoundException;
 import com.daniel.menu.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -16,8 +18,9 @@ import java.util.Objects;
 public class FoodService {
     private final FoodRepository foodRepository;
 
-    public List<Food> getAllFoods() {
-        return foodRepository.findAll();
+    public Page<Food> getAllFoods(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return foodRepository.findAll(pageable);
     }
 
     public void createFood(Food food) {
