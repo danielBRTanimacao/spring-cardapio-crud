@@ -1,9 +1,12 @@
 package com.daniel.menu.service;
 
+import com.daniel.menu.component.TokenGenerator;
+import com.daniel.menu.dto.FoodRequestDTO;
 import com.daniel.menu.entity.Food;
 import com.daniel.menu.exceptions.customs.NotFoundException;
 import com.daniel.menu.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,20 +14,47 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class FoodService {
     private final FoodRepository foodRepository;
 
+    @Value("${spring.upload.dir}")
+    private String PATH_UPLOAD;
+
     public Page<Food> getAllFoods(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return foodRepository.findAll(pageable);
     }
 
-    public void createFood(Food food) {
-        foodRepository.save(food);
+    public void createFood(FoodRequestDTO data) {
+        try {
+            Path uploadFile = Paths.get(this.PATH_UPLOAD);
+            if(!Files.exists(uploadFile)) {
+                Files.createDirectories(uploadFile);
+            }
+
+            String filename = TokenGenerator.generateToken() + "-" + data.image().getOriginalFilename();
+            Path filePath = uploadFile.resolve(filename);
+            data.image().transferTo(new File(filePath.toAbsolutePath().toString()));
+
+            Food food = new Food();
+            food.setImage(filename);
+            food.setTitle(data.title());
+            food.setPrice(data.price());
+            foodRepository.save(food);
+
+        } catch (IOException | IllegalStateException e) {
+            throw new IllegalArgumentException("Could not save image food", e);
+        }
     }
 
     public ResponseEntity<Void> delFood(Long id) {
