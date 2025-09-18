@@ -1,24 +1,15 @@
 package com.daniel.menu.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 import com.daniel.menu.service.FoodService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.*;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import com.daniel.menu.dto.*;
 import com.daniel.menu.entity.Food;
-import com.daniel.menu.repository.FoodRepository;
 
 import jakarta.validation.Valid;
 
@@ -45,7 +36,8 @@ public class FoodController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFood(@PathVariable Long id) {
-        return foodService.delFood(id);
+        foodService.delFood(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
@@ -54,8 +46,8 @@ public class FoodController {
         preFood.setImage(data.image());
         preFood.setPrice(data.price());
         preFood.setTitle(data.title());
-
-        return foodService.updateFood(id, preFood);
+        foodService.updateFood(id, preFood);
+        return ResponseEntity.ok().build();
     }
 
 }
