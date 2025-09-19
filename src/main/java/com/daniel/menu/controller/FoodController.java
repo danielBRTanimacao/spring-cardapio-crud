@@ -4,8 +4,6 @@ import java.util.*;
 
 import com.daniel.menu.service.FoodService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -48,7 +46,7 @@ public class FoodController {
 
     @Operation(
             summary = "Create and save new Food",
-            description = "create new food on db title, image, value"
+            description = "create new food with title, image, value"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -66,12 +64,40 @@ public class FoodController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Operation(
+            summary = "Delete Foods",
+            description = "request and delete a specific food"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Food deleted"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Food with id not found"
+            )
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFood(@PathVariable Long id) {
         foodService.delFood(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "Update Food",
+            description = "request and update a specific food"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Food updated"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Food with id not found"
+            )
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateFood(@PathVariable Long id, @Valid @RequestBody FoodUpdateDTO data) {
         Food preFood = new Food();
