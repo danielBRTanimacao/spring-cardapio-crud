@@ -9,6 +9,8 @@ FROM eclipse-temurin:21
 
 WORKDIR /menu
 
+RUN apt-get update && apt-get install -y wget
+
 COPY --from=builder /app/target/menu-0.0.1-SNAPSHOT.jar /menu.jar
 
 ENTRYPOINT [ "java", "-jar", "/menu.jar"]
